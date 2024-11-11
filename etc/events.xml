@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <!-- Observer for saving neighborhood after customer address save -->
+    <event name="customer_address_save_after">
+        <observer name="baytalebaa_customer_neighborhood_save"
+                  instance="Baytalebaa\CustomerNeighborhood\Observer\SaveNeighborhood"/>
+    </event>
+</config>

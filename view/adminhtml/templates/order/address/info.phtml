@@ -1,0 +1,31 @@
+<?php
+/**
+ * Order shipping address template
+ *
+ * @var \Magento\Sales\Block\Adminhtml\Order\View\Info $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+
+$order = $block->getOrder();
+$shippingAddress = $order->getShippingAddress();
+?>
+
+<?php if ($shippingAddress): ?>
+    <div class="admin__page-section-item order-shipping-address">
+        <div class="admin__page-section-item-title">
+            <span class="title"><?= $block->escapeHtml(__('Shipping Address')) ?></span>
+        </div>
+
+        <div class="admin__page-section-item-content">
+            <address>
+                <?= /* @noEscape */ $block->getFormattedAddress($shippingAddress) ?>
+            </address>
+
+            <?php if ($shippingAddress->getNeighborhood()): ?>
+                <div class="shipping-address-neighborhood">
+                    <?= $block->escapeHtml($shippingAddress->getNeighborhood()) ?>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+<?php endif; ?>

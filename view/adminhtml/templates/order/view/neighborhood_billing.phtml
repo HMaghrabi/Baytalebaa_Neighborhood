@@ -1,0 +1,10 @@
+<?php
+/** @var $block \Magento\Framework\View\Element\Template */
+$billingAddress = $block->getOrder()->getBillingAddress();
+$neighborhood = $billingAddress->getNeighborhood(); // Retrieve the neighborhood
+var_dump($neighborhood);
+?>
+<div class="billing-address-neighborhood">
+    <strong><?php echo __('Neighborhood:'); ?></strong>
+    <span><?php echo $this->escapeHtml($neighborhood); ?></span>
+</div>

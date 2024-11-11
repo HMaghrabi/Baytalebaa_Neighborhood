@@ -1,0 +1,24 @@
+<?php
+/**
+ * Order address neighborhood template
+ *
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+
+$parentBlock = $block->getParentBlock();
+$order = $parentBlock->getOrder();
+$isShippingAddress = strpos($block->getNameInLayout(), 'billing') === false;
+$address = $isShippingAddress ? $order->getShippingAddress() : $order->getBillingAddress();
+?>
+
+<?php if ($address && ($neighborhood = $address->getData('neighborhood'))): ?>
+    <div class="admin__field address-neighborhood">
+        <strong class="admin__field-label">
+            <?= $block->escapeHtml(__('Neighborhood:')) ?>
+        </strong>
+        <span class="admin__field-value">
+            <?= $block->escapeHtml($neighborhood) ?>
+        </span>
+    </div>
+<?php endif; ?>

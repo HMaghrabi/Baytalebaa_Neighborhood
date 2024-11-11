@@ -1,0 +1,139 @@
+<?php
+/**
+ * @var $block \Magento\Sales\Block\Adminhtml\Order\View\Info
+ */
+?>
+<?php $_order = $block->getOrder() ?>
+
+    <section class="admin__page-section order-view-account-information">
+        <div class="admin__page-section-title">
+            <span class="title"><?= $block->escapeHtml(__('Order & Account Information')) ?></span>
+        </div>
+        <div class="admin__page-section-content">
+            <div class="admin__page-section-item order-information">
+                <?php /* Order Information */ ?>
+                <div class="admin__page-section-item-title">
+                <span class="title">
+                    <strong><?= $block->escapeHtml(__('Order # %1', $_order->getIncrementId())) ?>
+                        <?php if ($_order->getEmailSent()): ?>
+                            (<?= $block->escapeHtml(__('The order confirmation email was sent')) ?>)
+                        <?php endif; ?></strong>
+                </span>
+                </div>
+                <div class="admin__page-section-item-content">
+                    <table class="admin__table-secondary order-information-table">
+                        <tr>
+                            <th><?= $block->escapeHtml(__('Order Date')) ?></th>
+                            <td><?= $block->formatDate($_order->getCreatedAt(), \IntlDateFormatter::MEDIUM, true) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= $block->escapeHtml(__('Order Status')) ?></th>
+                            <td><span id="order_status"><?= $block->escapeHtml($_order->getStatusLabel()) ?></span></td>
+                        </tr>
+                        <?php if ($_order->getPayment()->getLastTransId()): ?>
+                            <tr>
+                                <th><?= $block->escapeHtml(__('Hyperpay payment id')) ?></th>
+                                <td><?= $block->escapeHtml($_order->getPayment()->getLastTransId()) ?></td>
+                            </tr>
+                        <?php endif; ?>
+                        <tr>
+                            <th><?= $block->escapeHtml(__('Purchased From')) ?></th>
+                            <td><?= $block->escapeHtml($_order->getStoreName()) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= $block->escapeHtml(__('Placed from IP')) ?></th>
+                            <td>
+                                <?= $block->escapeHtml($_order->getRemoteIp()) ?>
+                                <?php if ($_order->getXForwardedFor()): ?>
+                                    (<?= $block->escapeHtml($_order->getXForwardedFor()) ?>)
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                        <?= $block->getChildHtml() ?>
+                    </table>
+                </div>
+            </div>
+
+            <div class="admin__page-section-item order-account-information">
+                <?php /* Account Information */ ?>
+                <div class="admin__page-section-item-title">
+                    <span class="title"><strong><?= $block->escapeHtml(__('Account Information')) ?></strong></span>
+                    <?php if (!$_order->getCustomerIsGuest()): ?>
+                        <div class="actions">
+                            <a href="<?= $block->escapeUrl($block->getCustomerEditUrl()) ?>">
+                                <?= $block->escapeHtml(__('Edit Customer')) ?>
+                            </a>
+                        </div>
+                    <?php endif; ?>
+                </div>
+                <div class="admin__page-section-item-content">
+                    <table class="admin__table-secondary order-account-information-table">
+                        <tr>
+                            <th><?= $block->escapeHtml(__('Customer Name')) ?></th>
+                            <td>
+                                <?php if ($_order->getCustomerIsGuest()) : ?>
+                                    <?= $block->escapeHtml($_order->getBillingAddress()->getName()) ?> (<?= $block->escapeHtml(__('Guest')) ?>)
+                                <?php else : ?>
+                                    <a href="<?= $block->escapeUrl($block->getCustomerViewUrl()) ?>">
+                                        <?= $block->escapeHtml($_order->getCustomerName()) ?>
+                                    </a>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><?= $block->escapeHtml(__('Email')) ?></th>
+                            <td><a href="mailto:<?= $block->escapeHtml($_order->getCustomerEmail()) ?>"><?= $block->escapeHtml($_order->getCustomerEmail()) ?></a></td>
+                        </tr>
+                        <?php if (!$_order->getCustomerIsGuest()): ?>
+                            <tr>
+                                <th><?= $block->escapeHtml(__('Customer Group')) ?></th>
+                                <td><?= $block->escapeHtml($_order->getCustomerGroupName()) ?></td>
+                            </tr>
+                        <?php endif; ?>
+                        <tr>
+                            <th><?= $block->escapeHtml(__('Customer Mobile')) ?></th>
+                            <td><?= $block->escapeHtml($_order->getBillingAddress()->getTelephone()) ?></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<?php if (!$_order->getIsVirtual()): ?>
+    <section class="admin__page-section order-view-billing-shipping">
+        <div class="admin__page-section-title">
+            <span class="title"><?= $block->escapeHtml(__('Address Information')) ?></span>
+        </div>
+        <div class="admin__page-section-content">
+            <div class="admin__page-section-item order-billing-address">
+                <?php /* Billing Address */ ?>
+                <div class="admin__page-section-item-title">
+                    <span class="title"><?= $block->escapeHtml(__('Billing Address')) ?></span>
+                    <div class="actions"><?= /* @noEscape */ $block->getAddressEditLink($_order->getBillingAddress()); ?></div>
+                </div>
+                <address class="admin__page-section-item-content">
+                    <?= $block->getFormattedAddress($_order->getBillingAddress()) ?>
+                    <?php if ($_order->getBillingAddress()->getNeighborhood()): ?>
+                        <br/>
+                        <?= $block->escapeHtml($_order->getBillingAddress()->getNeighborhood()) ?>
+                    <?php endif; ?>
+                </address>
+            </div>
+            <div class="admin__page-section-item order-shipping-address">
+                <?php /* Shipping Address */ ?>
+                <div class="admin__page-section-item-title">
+                    <span class="title"><?= $block->escapeHtml(__('Shipping Address')) ?></span>
+                    <div class="actions"><?= /* @noEscape */ $block->getAddressEditLink($_order->getShippingAddress()); ?></div>
+                </div>
+                <address class="admin__page-section-item-content">
+                    <?= $block->getFormattedAddress($_order->getShippingAddress()) ?>
+                    <?php if ($_order->getShippingAddress()->getNeighborhood()): ?>
+                        <br/>
+                        <?= $block->escapeHtml($_order->getShippingAddress()->getNeighborhood()) ?>
+                    <?php endif; ?>
+                </address>
+            </div>
+        </div>
+    </section>
+<?php endif; ?>

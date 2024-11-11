@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- Plugin for saving neighborhood during checkout shipping information -->
+    <type name="Magento\Checkout\Model\ShippingInformationManagement">
+        <plugin name="save_neighborhood_in_quote"
+                type="Baytalebaa\CustomerNeighborhood\Plugin\ShippingInformationManagementPlugin"/>
+    </type>
+
+    <!-- Plugin for transferring neighborhood from quote to order address -->
+    <type name="Magento\Quote\Model\Quote\Address\ToOrderAddress">
+        <plugin name="save_neighborhood_to_order_address"
+                type="Baytalebaa\CustomerNeighborhood\Plugin\ConvertQuoteAddressToOrderAddress"/>
+    </type>
+</config>

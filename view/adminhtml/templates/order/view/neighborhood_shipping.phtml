@@ -1,0 +1,9 @@
+<?php
+/** @var $block \Magento\Framework\View\Element\Template */
+$shippingAddress = $block->getOrder()->getShippingAddress();
+$neighborhood = $shippingAddress->getNeighborhood(); // Retrieve the neighborhood
+?>
+<div class="shipping-address-neighborhood">
+
+    <span><?php echo $this->escapeHtml($neighborhood); ?></span>
+</div>
